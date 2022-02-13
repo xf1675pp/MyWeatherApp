@@ -5,12 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.xf1675pp.myweather.R
 import com.xf1675pp.myweather.data.DayForecast
+import com.xf1675pp.myweather.data.Forecast
 import java.util.*
 
-class DayForecastAdapter(private val dataSet: List<DayForecast>) :
+class DayForecastAdapter(private val dataSet: Forecast) :
     RecyclerView.Adapter<DayForecastAdapter.ViewHolder>() {
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -20,6 +23,7 @@ class DayForecastAdapter(private val dataSet: List<DayForecast>) :
         val low: TextView = view.findViewById(R.id.item_low)
         val sunrise: TextView = view.findViewById(R.id.item_sunrise)
         val sunset: TextView = view.findViewById(R.id.item_sunset)
+        val image: AppCompatImageView = view.findViewById(R.id.item_image)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -31,23 +35,37 @@ class DayForecastAdapter(private val dataSet: List<DayForecast>) :
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        val data = dataSet[position]
+        val data = dataSet.list[position]
 
-        val calendar = Calendar.getInstance()
-        calendar.setTimeInMillis(data.date)
-        val dayOfWeekString =
-            calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH)
-        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        // Timestamp to Month Day ex: (Jan 31)
+        val date = Date(data.dt * 1000L)
+        val sdf = java.text.SimpleDateFormat("MMM d")
+        val dateString = sdf.format(date)
 
-        holder.date.text = dayOfWeekString!! + " " + day
-        holder.temp.text = "Temp: " + data.temp.day.toString() + "º"
-        holder.high.text = "High: " + data.temp.max.toString() + "º"
-        holder.low.text = "Low: " + data.temp.min.toString() + "º"
-        holder.sunrise.text = "Sunrise:" + data.sunrise.toString()
-        holder.sunset.text = "Sunset: " + data.sunset.toString()
+        // Timestamp to Time ex: (12:00 PM)
+        val sunrise = Date(data.sunrise * 1000L)
+        val parseSunrise = java.text.SimpleDateFormat("h:mm a")
+        val sunriseString = parseSunrise.format(sunrise)
+
+        val sunset = Date(data.sunset * 1000L)
+        val parseSunset = java.text.SimpleDateFormat("h:mm a")
+        val sunsetString = parseSunset.format(sunset)
+        
+        // Bind data to view
+        holder.date.text = dateString.toString()
+        holder.temp.text = "Temp: ${data.temp.day}°"
+        holder.high.text = "High: ${data.temp.max}°"
+        holder.low.text = "Low: ${data.temp.min}°"
+        holder.sunrise.text = sunriseString
+        holder.sunset.text = sunsetString
+
+        // Use Glide to load the image
+        val icon = data.weather[0].icon
+        val iconUrl = "https://openweathermap.org/img/wn/${icon}@2x.png"
+        Glide.with(holder.image.context).load(iconUrl).into(holder.image)
     }
 
     override fun getItemCount(): Int {
-        return dataSet.size
+        return dataSet.list.size
     }
 }
