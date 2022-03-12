@@ -1,15 +1,15 @@
 package com.xf1675pp.myweather.data
 
-data class CurrentConditions(
-    val name : String, val main: Main, val sys: SysData
-)
+import javax.inject.Inject
 
-data class SysData(
+data class CurrentConditions @Inject constructor(val name : String, val main: Main, val sys: SysData)
+
+data class SysData @Inject constructor(
     val sunrise: Long,
     val sunset: Long
 )
 
-data class Main(
+data class Main @Inject constructor(
     val temp: Float,
     val feels_like: Float,
     val temp_min: Float,
@@ -18,9 +18,9 @@ data class Main(
     val humidity: Int
 )
 
-data class Forecast(val list: List<DayForecast>)
+data class Forecast @Inject constructor(val list: List<DayForecast>)
 
-data class DayForecast(
+data class DayForecast @Inject constructor(
     val dt: Long,
     val sunrise: Long,
     val weather: List<Weather>,
@@ -30,6 +30,6 @@ data class DayForecast(
     val humidity: Int
 )
 
-data class ForecastTemp(val day: Float, val min: Float, val max: Float)
+data class ForecastTemp @Inject constructor(val day: Float, val min: Float, val max: Float)
 
-data class Weather(val icon: String)
+data class Weather @Inject constructor(val icon: String)

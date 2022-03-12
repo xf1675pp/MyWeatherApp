@@ -1,126 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/title"
-        android:textColor="@color/black"
-        android:textSize="24sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".MainActivity">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/title"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
-    <TextView
-        android:id="@+id/temperature"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="@string/temparature_big"
-        android:textColor="@color/black"
-        android:textSize="72sp"
-        app:layout_constraintHorizontal_bias="0.281"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title" />
+        <TextView
+            android:id="@+id/temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/temparature_big"
+            android:textColor="@color/black"
+            android:textSize="72sp"
+            app:layout_constraintHorizontal_bias="0.281"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title" />
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/image_weather"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:src="@drawable/sun_icon"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/temperature"
-        app:layout_constraintTop_toBottomOf="@+id/title" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/image_weather"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:src="@drawable/sun_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/temperature"
+            app:layout_constraintTop_toBottomOf="@+id/title" />
 
-    <TextView
-        android:id="@+id/feels_like"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/feels_like"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="@+id/temperature"
-        app:layout_constraintHorizontal_bias="0.296"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/temperature"
-        app:layout_constraintTop_toBottomOf="@+id/temperature" />
+        <TextView
+            android:id="@+id/feels_like"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/feels_like"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@+id/temperature"
+            app:layout_constraintHorizontal_bias="0.296"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/temperature"
+            app:layout_constraintTop_toBottomOf="@+id/temperature" />
 
-    <TextView
-        android:id="@+id/low"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="@string/low"
-        android:textColor="@color/black"
-        android:textSize="24sp"
-        app:layout_constraintHorizontal_bias="0.201"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/feels_like" />
+        <TextView
+            android:id="@+id/low"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="@string/low"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            app:layout_constraintHorizontal_bias="0.201"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/feels_like" />
 
-    <TextView
-        android:id="@+id/high"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="@string/high"
-        android:textColor="@color/black"
-        android:textSize="24sp"
-        app:layout_constraintHorizontal_bias="0.204"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/low"
-        app:layout_constraintTop_toBottomOf="@+id/low" />
+        <TextView
+            android:id="@+id/high"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/high"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            app:layout_constraintHorizontal_bias="0.204"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/low"
+            app:layout_constraintTop_toBottomOf="@+id/low" />
 
-    <TextView
-        android:id="@+id/humidity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="@string/humidity"
-        android:textColor="@color/black"
-        android:textSize="24sp"
-        app:layout_constraintHorizontal_bias="0.239"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/high"
-        app:layout_constraintTop_toBottomOf="@+id/high" />
+        <TextView
+            android:id="@+id/humidity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/humidity"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            app:layout_constraintHorizontal_bias="0.239"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/high"
+            app:layout_constraintTop_toBottomOf="@+id/high" />
 
-    <TextView
-        android:id="@+id/pressure"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="@string/pressure"
-        android:textColor="@color/black"
-        android:textSize="24sp"
-        app:layout_constraintHorizontal_bias="0.239"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/humidity"
-        app:layout_constraintTop_toBottomOf="@+id/humidity" />
+        <TextView
+            android:id="@+id/pressure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/pressure"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            app:layout_constraintHorizontal_bias="0.239"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/humidity"
+            app:layout_constraintTop_toBottomOf="@+id/humidity" />
 
-    <Button
-        android:id="@+id/forecast"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="@string/forecast"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pressure" />
+        <Button
+            android:id="@+id/forecast"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/forecast"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pressure" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ProgressBar
+            android:id="@+id/main_progressbar"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:indeterminateTint="@color/purple_700"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/forecast" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
