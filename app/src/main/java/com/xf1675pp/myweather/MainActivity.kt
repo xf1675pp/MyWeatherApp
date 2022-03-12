@@ -49,6 +49,8 @@ class MainActivity : AppCompatActivity() {
         getCurrentConditions()
     }
 
+
+
     private fun getCurrentConditions() {
 
         val lat = "35"
