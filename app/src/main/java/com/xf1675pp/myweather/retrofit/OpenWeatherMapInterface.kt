@@ -23,21 +23,22 @@ interface OpenWeatherMapInterface {
 
     @Headers("Content-Type: application/json")
     @GET("data/2.5/weather")
-    suspend fun getCurrentConditions(
-        @Query("lat") lat: String,
-        @Query("lon") long: String,
+    suspend fun getCurrentConditionsByZip(
+        @Query("zip") zip: String,
         @Query("units") units: String,
         @Query("appid") appId: String
     ): Response<CurrentConditions>
 
     @GET("/data/2.5/forecast/daily")
-    suspend fun getForecast(
-        @Query("lat") lat: String,
-        @Query("lon") long: String,
+    suspend fun getForecastByZip(
+        @Query("zip") zip: String,
         @Query("cnt") cnt: String,
         @Query("units") units: String,
         @Query("appid") appId: String
     ): Response<Forecast>
+
+
+
 
     companion object {
 

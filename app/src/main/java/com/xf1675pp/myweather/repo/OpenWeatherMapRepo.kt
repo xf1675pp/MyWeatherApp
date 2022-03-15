@@ -2,7 +2,6 @@ package com.xf1675pp.myweather.repo
 
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.Glide
@@ -13,51 +12,59 @@ import javax.inject.Inject
 
 class OpenWeatherMapRepo @Inject constructor(private val openWeatherMapInterface: OpenWeatherMapInterface) {
 
+    var context: Context? = null
     private val currentConditionsLiveData = MutableLiveData<CurrentConditions>()
     val conditions: LiveData<CurrentConditions>
-    get() = currentConditionsLiveData
+        get() = currentConditionsLiveData
 
     private val imageDrawable: MutableLiveData<Drawable> = MutableLiveData<Drawable>()
     val image: LiveData<Drawable>
-    get() = imageDrawable
+        get() = imageDrawable
 
     private val forecastsLiveData = MutableLiveData<Forecast>()
     val forecasts: LiveData<Forecast>
         get() = forecastsLiveData
 
-    suspend fun getCurrentConditions(lat: String, lon: String,  units: String, appId: String)
-    {
-        val result = openWeatherMapInterface.getCurrentConditions(lat, lon, units, appId)
+    suspend fun getCurrentConditionsByZip(zip: String, units: String, appId: String) {
+        val result = openWeatherMapInterface.getCurrentConditionsByZip(zip, units, appId)
 
-        if (result.body() != null)
-        {
+        if (result.body() != null) {
             currentConditionsLiveData.postValue(result.body())
-        }
-        else
-        {
-            Log.d("FAIL", "========================================")
+        } else {
+            val failure: FailInterface = object : FailInterface {
+                override fun failed() {
+                }
+
+            }
+            failure.failed()
         }
     }
 
 
-    suspend fun getForecast(lat: String, lon: String,  cnt: String, units:String, appId: String)
-    {
-        val result = openWeatherMapInterface.getForecast(lat, lon, cnt, units, appId)
+    suspend fun getForecastByZip(zip: String, cnt: String, units: String, appId: String) {
+        val result = openWeatherMapInterface.getForecastByZip(zip, cnt, units, appId)
 
-        if (result.body() != null)
-        {
+
+        if (result.body() != null) {
             forecastsLiveData.postValue(result.body())
-        }
-        else
-        {
-            Log.d("FAIL", "========================================")
+        } else {
+            val failure: ForecasteFailureInterface = object :ForecasteFailureInterface{
+                override fun failed() {
+                }
+
+            }
+            failure.failed()
         }
     }
 
 
-    fun downloadImage(context: Context) {
+    fun downloadImage() {
         val imageUrl = "https://openweathermap.org/img/wn/10d@2x.png"
-        val image = Glide.with(context).asDrawable().load(imageUrl).submit(300, 300)
+        val image = Glide.with(context!!).asDrawable().load(imageUrl).submit(300, 300)
         imageDrawable.postValue(image.get())
+    }
+
+    fun giveContext(context: Context) {
+        this.context = context
     }
 }
