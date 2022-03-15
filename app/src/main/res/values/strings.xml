@@ -9,4 +9,6 @@
     <string name="humidity">Humidity 100%</string>
     <string name="forecast">Forecast</string>
     <string name="API_KEY">67018da1a6b55ea20a1477b28970da76</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search">Search</string>
 </resources>

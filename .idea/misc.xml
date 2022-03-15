@@ -3,6 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Freelance work/assignment 5 cloned/MyWeatherApp/app/src/main/res/drawable/edittext_background.xml" value="0.163" />
+        <entry key="..\:/Freelance work/assignment 5 cloned/MyWeatherApp/app/src/main/res/layout/activity_forecast.xml" value="0.19427083333333334" />
+        <entry key="..\:/Freelance work/assignment 5 cloned/MyWeatherApp/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Freelance work/assignment 5 cloned/MyWeatherApp/app/src/main/res/layout/forecast_row_item.xml" value="0.346875" />
+        <entry key="..\:/Freelance work/assignment 5 cloned/MyWeatherApp/app/src/main/res/layout/fragment_conditions.xml" value="0.228125" />
+        <entry key="..\:/Freelance work/assignment 5 cloned/MyWeatherApp/app/src/main/res/layout/fragment_forecast.xml" value="0.2171875" />
+        <entry key="..\:/Freelance work/assignment 5 cloned/MyWeatherApp/app/src/main/res/layout/fragment_search.xml" value="0.4" />
         <entry key="..\:/Freelance work/cloned/MyWeatherApp/app/src/main/res/layout/activity_forecast.xml" value="0.28958333333333336" />
         <entry key="..\:/Freelance work/cloned/MyWeatherApp/app/src/main/res/layout/activity_main.xml" value="0.28958333333333336" />
         <entry key="app/src/main/res/layout/activity_forecast.xml" value="0.25625" />
