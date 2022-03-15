@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/searchFragment">
+
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.xf1675pp.myweather.SearchFragment"
+        android:label="Search"
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_conditionsFragment"
+            app:destination="@id/conditionsFragment" >
+            <argument
+                android:name="currentconditions"
+                app:argType="com.xf1675pp.myweather.data.CurrentConditions"/>
+            <argument
+                android:name="image"
+                app:argType="com.xf1675pp.myweather.data.BitmapObj"/>
+            <argument
+                android:name="zipcode"
+                app:argType="string"
+                android:defaultValue="55101"/>
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/conditionsFragment"
+        android:name="com.xf1675pp.myweather.ConditionsFragment"
+        android:label="Current Conditions"
+        tools:layout="@layout/fragment_conditions" >
+
+        <action
+            android:id="@+id/action_conditionsFragment_to_forecastFragment"
+            app:destination="@id/forecastFragment">
+            <argument
+                android:name="zipcode"
+                app:argType="string"
+                android:defaultValue="55101"/>
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/forecastFragment"
+        android:name="com.xf1675pp.myweather.ForecastFragment"
+        android:label="Forecast Fragment"
+        tools:layout="@layout/fragment_forecast" />
+</navigation>
