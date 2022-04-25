@@ -2,12 +2,15 @@ package com.xf1675pp.myweather
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.ActivityManager
+import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.location.Location
+import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,6 +55,9 @@ class SearchFragment : Fragment(), FailInterface {
     lateinit var navController: NavController
     lateinit var progressBar: ProgressBar
     lateinit var locationButton: Button
+    lateinit var startServiceButton: Button
+
+    private lateinit var locationListenerService:LocationListener
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
@@ -71,6 +77,7 @@ class SearchFragment : Fragment(), FailInterface {
 
         progressBar = view.findViewById(R.id.main_progressbar)
         locationButton = view.findViewById(R.id.location_button)
+        startServiceButton = view.findViewById(R.id.start_service_button)
 
         navHostFragment =
             requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
@@ -84,6 +91,9 @@ class SearchFragment : Fragment(), FailInterface {
             ViewModelProvider(this, SearchFragmentViewModelFactory(repo, requireContext())).get(
                 SearchFragmentViewModel::class.java
             )
+
+
+        locationListenerService = LocationListener()
 
         zipcode = view.findViewById(R.id.zipcode_edittext)
 
@@ -123,22 +133,44 @@ class SearchFragment : Fragment(), FailInterface {
 
         }
 
+        if (!isServiceRunning(locationListenerService.javaClass)) {
+            startServiceButton.text = "Start Service"
+        }
+        else
+        {
+            startServiceButton.text = "Stop Service"
+        }
+
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
 
-        val requestLocationPermission =
+        val requestBackgroundLocationPermission =
             registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
                 if (!permissions.containsValue(false)) {
-
-
                 } else {
                     searchFragmentViewModel.showPermissionsDialog(requireContext())
                 }
             }
 
+        val requestForegroundLocationPermission =
+            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+                if (!permissions.containsValue(false)) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        requestBackgroundLocationPermission.launch(
+                            arrayOf(
+                                Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                            )
+                        )
+                    }
+                } else {
+                    searchFragmentViewModel.showPermissionsDialog(requireContext())
+                }
+            }
+
+
         if (!searchFragmentViewModel.checkPermissions(requireContext())) {
-            requestLocationPermission.launch(
+            requestForegroundLocationPermission.launch(
                 arrayOf(
                     Manifest.permission.ACCESS_COARSE_LOCATION,
                     Manifest.permission.ACCESS_FINE_LOCATION
@@ -146,17 +178,17 @@ class SearchFragment : Fragment(), FailInterface {
             )
         }
 
-
-
         locationButton.setOnClickListener {
 
             if (!searchFragmentViewModel.checkPermissions(requireContext())) {
-                requestLocationPermission.launch(
+
+                requestForegroundLocationPermission.launch(
                     arrayOf(
                         Manifest.permission.ACCESS_COARSE_LOCATION,
                         Manifest.permission.ACCESS_FINE_LOCATION
                     )
                 )
+
             } else {
                 fusedLocationClient.lastLocation
                     .addOnSuccessListener { location: Location? ->
@@ -247,6 +279,45 @@ class SearchFragment : Fragment(), FailInterface {
             }
         })
 
+
+
+        startServiceButton.setOnClickListener {
+            if (!searchFragmentViewModel.checkPermissions(requireContext())) {
+
+                requestForegroundLocationPermission.launch(
+                    arrayOf(
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    )
+                )
+
+                Toast.makeText(
+                    requireContext(),
+                    "Please allow permissions first!",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                var intent = Intent(requireContext(), locationListenerService.javaClass)
+                if (!isServiceRunning(locationListenerService.javaClass)) {
+                    requireActivity().startService(intent)
+                    Toast.makeText(
+                        requireContext(),
+                        "Service started successfully!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    startServiceButton.text = "STOP SERVICE"
+                } else {
+                    requireActivity().stopService(intent)
+                    Toast.makeText(
+                        requireContext(),
+                        "Service stopped successfully!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    startServiceButton.text = "START SERVICE"
+                }
+            }
+        }
+
         return view
     }
 
@@ -287,6 +358,17 @@ class SearchFragment : Fragment(), FailInterface {
             lat = ""
             long = ""
         }
+    }
+
+    private fun isServiceRunning(serviceClass: Class<*>): Boolean {
+        val manager: ActivityManager =
+            requireActivity().getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        for (running in manager.getRunningServices(Int.MAX_VALUE)) {
+            if (serviceClass.name == running.service.className) {
+                return true
+            }
+        }
+        return false
     }
 
 

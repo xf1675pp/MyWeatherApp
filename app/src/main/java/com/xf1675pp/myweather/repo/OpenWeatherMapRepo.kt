@@ -25,6 +25,15 @@ class OpenWeatherMapRepo @Inject constructor(private val openWeatherMapInterface
     val forecasts: LiveData<Forecast>
         get() = forecastsLiveData
 
+    private val currentConditionsLiveDataForService = MutableLiveData<CurrentConditions>()
+    val conditionsForService: LiveData<CurrentConditions>
+        get() = currentConditionsLiveDataForService
+
+    private val imageDrawableForService: MutableLiveData<Drawable> = MutableLiveData<Drawable>()
+    val imageForService: LiveData<Drawable>
+        get() = imageDrawable
+
+
     suspend fun getCurrentConditionsByZip(zip: String, units: String, appId: String) {
         val result = openWeatherMapInterface.getCurrentConditionsByZip(zip, units, appId)
         if (result.body() != null) {
@@ -70,6 +79,21 @@ class OpenWeatherMapRepo @Inject constructor(private val openWeatherMapInterface
                 override fun failed() {
                 }
 
+            }
+            failure.failed()
+        }
+    }
+
+
+    suspend fun getCurrentConditionsByLatLongForService(lat: String, long: String, units: String, appId: String)
+    {
+        val result = openWeatherMapInterface.getCurrentConditionsByLatLong(lat, long, units, appId)
+        if (result.body() != null) {
+            currentConditionsLiveDataForService.postValue(result.body())
+        } else {
+            val failure: FailInterface = object : FailInterface {
+                override fun failed() {
+                }
             }
             failure.failed()
         }

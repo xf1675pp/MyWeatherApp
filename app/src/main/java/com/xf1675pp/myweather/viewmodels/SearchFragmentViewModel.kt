@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
+import android.os.Build
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.*
@@ -32,6 +33,10 @@ constructor(private val repo: OpenWeatherMapRepo, @ApplicationContext context: C
     val conditions: LiveData<CurrentConditions>
         get() = repo.conditions
 
+    val conditionsForService: LiveData<CurrentConditions>
+        get() = repo.conditionsForService
+
+
     fun makeCall(zip: String) {
 
         viewModelScope.launch(Dispatchers.IO) {
@@ -53,14 +58,27 @@ constructor(private val repo: OpenWeatherMapRepo, @ApplicationContext context: C
     }
 
 
+    fun makeCallByLatLongForService(lat: String, long: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repo.getCurrentConditionsByLatLongForService(lat, long, units, appId)
+        }
+    }
+
+
     fun checkPermissions(context: Context): Boolean {
-        return !(ActivityCompat.checkSelfPermission(
-            context,
-            Manifest.permission.ACCESS_FINE_LOCATION
-        ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-            context,
-            Manifest.permission.ACCESS_COARSE_LOCATION
-        ) != PackageManager.PERMISSION_GRANTED)
+
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
+            == PackageManager.PERMISSION_GRANTED) {
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+
+                return (ActivityCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED)
+            }
+        }
+        return false
     }
 
 
