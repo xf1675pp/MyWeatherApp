@@ -10,16 +10,25 @@ import kotlinx.coroutines.launch
 
 class ForecastFragmentViewModel(private val repo: OpenWeatherMapRepo): ViewModel() {
 
+    private val cnt = "16"
+    private val appId = "67018da1a6b55ea20a1477b28970da76"
+    private val units = "metric"
     val forecast: LiveData<Forecast>
         get() = repo.forecasts
 
     fun makeForecastCall(zip: String)
     {
-        val cnt = "16"
-        val appid = "67018da1a6b55ea20a1477b28970da76"
-        val units = "metric"
+
         viewModelScope.launch(Dispatchers.IO) {
-            repo.getForecastByZip(zip, cnt, units, appid)
+            repo.getForecastByZip(zip, cnt, units, appId)
+        }
+    }
+
+    fun makeForecastCallByLatLong(lat: String, long: String)
+    {
+
+        viewModelScope.launch(Dispatchers.IO) {
+            repo.getForecastByLatLong(lat, long, cnt, units, appId)
         }
     }
 }

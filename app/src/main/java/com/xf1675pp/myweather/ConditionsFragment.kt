@@ -42,7 +42,9 @@ class ConditionsFragment : Fragment() {
 
     lateinit var conditionsViewModel: ConditionsViewModel
 
-    private var zipString: String = "55101"
+    private var zipString: String = ""
+    private var latString: String = ""
+    private var longString: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,11 +53,15 @@ class ConditionsFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_conditions, container, false)
 
-        conditionsViewModel =  ViewModelProvider(this, ConditionsViewModelFactory()).get(ConditionsViewModel::class.java)
+        conditionsViewModel = ViewModelProvider(
+            this,
+            ConditionsViewModelFactory()
+        ).get(ConditionsViewModel::class.java)
 
 
 
-        navHostFragment = requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navHostFragment =
+            requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.findNavController()
 
         image = view.findViewById(R.id.image_weather)
@@ -74,10 +80,14 @@ class ConditionsFragment : Fragment() {
         conditionsViewModel.initConditions(currentConditions)
         bitmapObj = requireArguments().get("image") as BitmapObj
         zipString = requireArguments().getString("zipcode") as String
+        latString = requireArguments().getString("lat") as String
+        longString = requireArguments().getString("long") as String
 
-        if (this::bitmapObj.isInitialized)
-        {
-            val drawable = BitmapDrawable(resources, BitmapFactory.decodeByteArray(bitmapObj.byteArray, 0, bitmapObj.byteArray.size))
+        if (this::bitmapObj.isInitialized) {
+            val drawable = BitmapDrawable(
+                resources,
+                BitmapFactory.decodeByteArray(bitmapObj.byteArray, 0, bitmapObj.byteArray.size)
+            )
             conditionsViewModel.initImage(drawable)
         }
 
@@ -97,7 +107,10 @@ class ConditionsFragment : Fragment() {
         })
 
         forecast.setOnClickListener {
-            val action = ConditionsFragmentDirections.actionConditionsFragmentToForecastFragment(zipString)
+            val action =
+                ConditionsFragmentDirections.actionConditionsFragmentToForecastFragment(
+                    zipString, latString, longString
+                )
             navController.navigate(action)
         }
 

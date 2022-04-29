@@ -28,7 +28,9 @@ class ForecastFragment : Fragment(), ForecasteFailureInterface {
     private lateinit var recyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
 
-    private var zipString: String = "55101"
+    private var zipString: String = ""
+    private var latString: String = ""
+    private var longString: String = ""
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,6 +38,8 @@ class ForecastFragment : Fragment(), ForecasteFailureInterface {
         val view = inflater.inflate(R.layout.fragment_forecast, container, false)
 
         zipString = requireArguments().getString("zipcode") as String
+        latString = requireArguments().getString("lat") as String
+        longString = requireArguments().getString("long") as String
 
         recyclerView = view.findViewById(R.id.forecastList)
         progressBar = view.findViewById(R.id.forecast_progressbar)
@@ -44,7 +48,13 @@ class ForecastFragment : Fragment(), ForecasteFailureInterface {
         val repo = OpenWeatherMapRepo(openWeatherMapInterface)
         forecastFragmentViewModel = ViewModelProvider(this, ForecastFragmentViewModelFactory(repo)).get(ForecastFragmentViewModel::class.java)
 
-        forecastFragmentViewModel.makeForecastCall(zipString)
+        if (zipString.isNotEmpty()) {
+            forecastFragmentViewModel.makeForecastCall(zipString)
+        }
+        else
+        {
+            forecastFragmentViewModel.makeForecastCallByLatLong(latString, longString)
+        }
 
         forecastFragmentViewModel.forecast.observe(requireActivity(), Observer {
             progressBar.visibility = View.GONE

@@ -25,25 +25,25 @@ class OpenWeatherMapRepo @Inject constructor(private val openWeatherMapInterface
     val forecasts: LiveData<Forecast>
         get() = forecastsLiveData
 
+    private val currentConditionsLiveDataForService = MutableLiveData<CurrentConditions>()
+    val conditionsForService: LiveData<CurrentConditions>
+        get() = currentConditionsLiveDataForService
+
+    private val imageDrawableForService: MutableLiveData<Drawable> = MutableLiveData<Drawable>()
+    val imageForService: LiveData<Drawable>
+        get() = imageDrawable
+
+
     suspend fun getCurrentConditionsByZip(zip: String, units: String, appId: String) {
         val result = openWeatherMapInterface.getCurrentConditionsByZip(zip, units, appId)
-
         if (result.body() != null) {
             currentConditionsLiveData.postValue(result.body())
-        } else {
-            val failure: FailInterface = object : FailInterface {
-                override fun failed() {
-                }
-
-            }
-            failure.failed()
         }
     }
 
 
     suspend fun getForecastByZip(zip: String, cnt: String, units: String, appId: String) {
         val result = openWeatherMapInterface.getForecastByZip(zip, cnt, units, appId)
-
 
         if (result.body() != null) {
             forecastsLiveData.postValue(result.body())
@@ -67,4 +67,50 @@ class OpenWeatherMapRepo @Inject constructor(private val openWeatherMapInterface
     fun giveContext(context: Context) {
         this.context = context
     }
+
+
+    suspend fun getCurrentConditionsByLatLong(lat: String, long: String, units: String, appId: String)
+    {
+        val result = openWeatherMapInterface.getCurrentConditionsByLatLong(lat, long, units, appId)
+        if (result.body() != null) {
+            currentConditionsLiveData.postValue(result.body())
+        } else {
+            val failure: FailInterface = object : FailInterface {
+                override fun failed() {
+                }
+
+            }
+            failure.failed()
+        }
+    }
+
+
+    suspend fun getCurrentConditionsByLatLongForService(lat: String, long: String, units: String, appId: String)
+    {
+        val result = openWeatherMapInterface.getCurrentConditionsByLatLong(lat, long, units, appId)
+        if (result.body() != null) {
+            currentConditionsLiveDataForService.postValue(result.body())
+        } else {
+            val failure: FailInterface = object : FailInterface {
+                override fun failed() {
+                }
+            }
+            failure.failed()
+        }
+    }
+
+    suspend fun getForecastByLatLong(lat: String, long: String, cnt: String, units: String, appId: String) {
+        val result = openWeatherMapInterface.getForecastByLatLong(lat, long, cnt, units, appId)
+        if (result.body() != null) {
+            forecastsLiveData.postValue(result.body())
+        } else {
+            val failure: ForecasteFailureInterface = object :ForecasteFailureInterface{
+                override fun failed() {
+                }
+
+            }
+            failure.failed()
+        }
+    }
+
 }

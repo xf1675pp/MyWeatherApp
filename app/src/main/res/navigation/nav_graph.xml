@@ -22,7 +22,15 @@
             <argument
                 android:name="zipcode"
                 app:argType="string"
-                android:defaultValue="55101"/>
+                android:defaultValue=""/>
+            <argument
+                android:name="lat"
+                app:argType="string"
+                android:defaultValue=""/>
+            <argument
+                android:name="long"
+                app:argType="string"
+                android:defaultValue=""/>
         </action>
     </fragment>
     <fragment
@@ -37,7 +45,15 @@
             <argument
                 android:name="zipcode"
                 app:argType="string"
-                android:defaultValue="55101"/>
+                android:defaultValue=""/>
+            <argument
+                android:name="lat"
+                app:argType="string"
+                android:defaultValue=""/>
+            <argument
+                android:name="long"
+                app:argType="string"
+                android:defaultValue=""/>
         </action>
     </fragment>
     <fragment
