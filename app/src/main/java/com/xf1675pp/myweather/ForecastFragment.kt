@@ -11,9 +11,13 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavDirections
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.xf1675pp.myweather.data.DayForecast
 import com.xf1675pp.myweather.recycler.DayForecastAdapter
+import com.xf1675pp.myweather.recycler.OnItemClickListener
 import com.xf1675pp.myweather.repo.ForecasteFailureInterface
 import com.xf1675pp.myweather.repo.OpenWeatherMapRepo
 import com.xf1675pp.myweather.retrofit.OpenWeatherMapInterface
@@ -21,7 +25,7 @@ import com.xf1675pp.myweather.viewmodels.ForecastFragmentViewModel
 import com.xf1675pp.myweather.viewmodels.ForecastFragmentViewModelFactory
 
 
-class ForecastFragment : Fragment(), ForecasteFailureInterface {
+class ForecastFragment : Fragment(), ForecasteFailureInterface, OnItemClickListener {
 
     private lateinit var dayForecastAdapter: DayForecastAdapter
     private lateinit var forecastFragmentViewModel: ForecastFragmentViewModel
@@ -46,19 +50,20 @@ class ForecastFragment : Fragment(), ForecasteFailureInterface {
 
         val openWeatherMapInterface = OpenWeatherMapInterface.create()
         val repo = OpenWeatherMapRepo(openWeatherMapInterface)
-        forecastFragmentViewModel = ViewModelProvider(this, ForecastFragmentViewModelFactory(repo)).get(ForecastFragmentViewModel::class.java)
+        forecastFragmentViewModel =
+            ViewModelProvider(this, ForecastFragmentViewModelFactory(repo)).get(
+                ForecastFragmentViewModel::class.java
+            )
 
         if (zipString.isNotEmpty()) {
             forecastFragmentViewModel.makeForecastCall(zipString)
-        }
-        else
-        {
+        } else {
             forecastFragmentViewModel.makeForecastCallByLatLong(latString, longString)
         }
 
         forecastFragmentViewModel.forecast.observe(requireActivity(), Observer {
             progressBar.visibility = View.GONE
-            dayForecastAdapter = DayForecastAdapter(it)
+            dayForecastAdapter = DayForecastAdapter(it, this)
             recyclerView.adapter = dayForecastAdapter
             recyclerView.layoutManager = LinearLayoutManager(requireActivity())
         })
@@ -74,8 +79,16 @@ class ForecastFragment : Fragment(), ForecasteFailureInterface {
                 })
         builder.create()
         progressBar.visibility = View.GONE
-        Toast.makeText(requireContext(),"Failed to get data from API!", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), "Failed to get data from API!", Toast.LENGTH_SHORT).show()
 
+    }
+
+    override fun onItemClicked(dayForecast: DayForecast) {
+        val action: NavDirections =
+            ForecastFragmentDirections.actionForecastFragmentToForecastDetailsFragment(
+                dayForecast
+            )
+        findNavController().navigate(action)
     }
 
 }

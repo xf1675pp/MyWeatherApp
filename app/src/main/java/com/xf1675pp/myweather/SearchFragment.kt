@@ -38,7 +38,6 @@ import com.xf1675pp.myweather.repo.OpenWeatherMapRepo
 import com.xf1675pp.myweather.retrofit.OpenWeatherMapInterface
 import com.xf1675pp.myweather.viewmodels.SearchFragmentViewModel
 import com.xf1675pp.myweather.viewmodels.SearchFragmentViewModelFactory
-import kotlinx.android.synthetic.main.fragment_search.*
 import java.io.ByteArrayOutputStream
 
 
@@ -112,10 +111,10 @@ class SearchFragment : Fragment(), FailInterface {
         search.setOnClickListener {
 
             if (reqFlag == 0) {
-                if (zipcode_edittext.text.toString()
-                        .isNotEmpty() && zipcode_edittext.text.toString().length == 5
+                if (zipcode.text.toString()
+                        .isNotEmpty() && zipcode.text.toString().length == 5
                 ) {
-                    zipCodeString = zipcode_edittext.text.toString()
+                    zipCodeString = zipcode.text.toString()
                     zipCodeString = "$zipCodeString,us"
                     searchFragmentViewModel.makeCall(zipCodeString)
                     setFlags()
