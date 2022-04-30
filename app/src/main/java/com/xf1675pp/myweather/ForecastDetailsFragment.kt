@@ -41,7 +41,6 @@ class ForecastDetailsFragment : Fragment() {
     ): View? {
         forecast = requireArguments().get("forecast_details") as DayForecast
         val iconUrl = "https://openweathermap.org/img/wn/${forecast.weather[0].icon}@2x.png"
-        val image = Glide.with(requireContext()).asDrawable().load(iconUrl).submit(300, 300)
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
