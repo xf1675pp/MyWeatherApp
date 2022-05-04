@@ -2,6 +2,7 @@ package com.xf1675pp.myweather.data
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
+import kotlinx.android.parcel.RawValue
 import javax.inject.Inject
 
 @Parcelize
@@ -25,6 +26,7 @@ data class Main @Inject constructor(
 
 data class Forecast @Inject constructor(val list: List<DayForecast>)
 
+@Parcelize
 data class DayForecast @Inject constructor(
     val dt: Long,
     val sunrise: Long,
@@ -32,12 +34,15 @@ data class DayForecast @Inject constructor(
     val sunset: Long,
     val temp: ForecastTemp,
     val pressure: Float,
-    val humidity: Int
-)
+    val humidity: Int,
+    val speed: Float
+): Parcelable
 
 @Parcelize
 data class BitmapObj(val byteArray: ByteArray): Parcelable
 
-data class ForecastTemp @Inject constructor(val day: Float, val min: Float, val max: Float)
+@Parcelize
+data class ForecastTemp @Inject constructor(val day: Float, val min: Float, val max: Float): Parcelable
 
-data class Weather @Inject constructor(val icon: String)
+@Parcelize
+data class Weather @Inject constructor(val icon: String, val main: String): Parcelable
